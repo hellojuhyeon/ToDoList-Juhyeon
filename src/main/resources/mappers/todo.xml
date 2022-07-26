@@ -16,4 +16,26 @@
 			now()
 		)
 	</insert>
+	<select id="getTodoListOfIndex" parameterType="hashmap" resultType="com.juhyeon.todolist.domain.todo.Todo">
+		select
+			tm.todo_code,  <!-- 키값만 써줌 -->
+			
+			tm.todo_content,
+			tm.todo_complete,
+			tm.importance_flag,
+			
+			tt.total_count, <!-- 별도의 테이블 -->
+			
+			tm.create_date,
+			tm.update_date
+		from
+			todo_mst tm
+			LEFT OUTER JOIN (select
+										COUNT(*) AS total_count
+									from
+										todo_mst) tt ON (1=1)
+		order by
+			todo_code desc
+		limit #{index},#{count}
+	</select>
 </mapper>
